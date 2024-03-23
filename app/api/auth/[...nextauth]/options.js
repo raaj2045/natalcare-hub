@@ -22,14 +22,15 @@ export const options = {
                         const docSnap = await getDoc(docRef);
 
                         if (docSnap.exists()) {
-                            console.log("user data:", docSnap.data());
-                            const user = docSnap.data()
+
+                            const user = { ...docSnap.data(), id: userCredentials.user.uid }
+                            console.log("user data:", user);
                             return user;
-                            
+
                         } else {
                             // docSnap.data() will be undefined in this case
                             throw new Error("No user found.")
-                        }                   
+                        }
                     } else {
                         // Return false if sign-in fails
                         throw new Error("Login failed, try again later.")
@@ -46,11 +47,17 @@ export const options = {
     ],
     callbacks: {
         async jwt({ token, user }) {
-            if (user) token.role = user.role;
+            if (user) {
+                token.role = user.role
+                token.id = user.id
+            }
             return token;
         },
         async session({ session, token }) {
-            if (session?.user) session.user.role = token.role;
+            if (session?.user) {
+                session.user.role = token.role
+                session.user.id = token.id
+            }
             return session;
         },
     },
