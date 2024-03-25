@@ -8,7 +8,7 @@ const PatientDashboard = () => {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-      redirect('/api/auth/signin?callbackUrl=/patient/patient-dashboard');
+      redirect('/');
     },
   });
 

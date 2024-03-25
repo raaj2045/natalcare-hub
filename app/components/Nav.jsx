@@ -52,9 +52,9 @@ const Nav = ({ children }) => {
       icon: () => <CalendarCheck2 />
     },
     {
-      name: 'Past Trimester',
+      name: 'Trimesters',
       role: 'patient',
-      href: "/patient/past-trimester",
+      href: "/patient/trimester",
       icon: () => <RefreshCcw />
     },
     {

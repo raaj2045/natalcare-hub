@@ -1,10 +1,8 @@
 "use client"
+
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { auth, db } from '../firebase';
-import { collection, setDoc, getDocs, doc } from "firebase/firestore";
 import { useToast } from "@/components/ui/use-toast"
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import {
   Table,
   TableBody,
@@ -32,8 +30,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-
-
+import axios from 'axios';
 
 const CreateUser = () => {
   const [userList, setUserList] = useState([]);
@@ -44,17 +41,13 @@ const CreateUser = () => {
 
   const handleAddUser = async () => {
     try {
-      const userCredentials = await createUserWithEmailAndPassword(auth, newUser.email, newUser.password);
 
+      await axios.post('/api/add-user', {
+        email: newUser.email, password: newUser.password, role: newUser.role
+      })
 
-      await setDoc(doc(db, "users", userCredentials.user.uid), {
-        email: newUser.email,
-        role: newUser.role
-      });
+      await fetchUsers()
 
-      const newUserData = { id: userCredentials.user.uid, email: newUser.email, role: newUser.role };
-
-      setUserList(prevUsers => [...prevUsers, newUserData]);
       setNewUser({ email: '', role: '', password: '' }); // Clear input fields after adding user
       toast({
         title: "New User Created!",
@@ -73,16 +66,9 @@ const CreateUser = () => {
 
   const fetchUsers = async () => {
     try {
-      const firestoreUsers = []
+      const res = await axios.get('/api/get-all-users')
 
-      const querySnapshot = await getDocs(collection(db, "users"));
-
-      querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        firestoreUsers.push({ id: doc.id, ...doc.data() })
-      });
-
-      setUserList(firestoreUsers)
+      setUserList(res.data)
     } catch (error) {
       console.error('Error fetching users:', error);
     }
@@ -105,15 +91,15 @@ const CreateUser = () => {
       // Get updated user data from the userList state
       const updatedUser = userList.find(user => user.id === userId);
       // Update user data in Firestore
-      await setDoc(doc(db, "users", userId), {
+
+      await axios.post('/api/update-user', {
         ...updatedUser
-      });
+      })
 
       toast({
         title: "User Saved!",
         description: "User has been saved successfully.",
       })
-
 
       // Disable edit mode for the saved user
       setEditMode(prevEditMode => ({

@@ -1,7 +1,5 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { collection, query, where, getDocs, Timestamp, addDoc } from "firebase/firestore";
-
 import {
   Table,
   TableBody,
@@ -11,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { db } from '@/app/firebase';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus } from 'lucide-react';
 
@@ -35,6 +32,7 @@ import { format } from 'date-fns';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { redirect } from 'next/navigation';
+import axios from 'axios';
 
 const Scheduler = () => {
   const { data: session, status } = useSession({
@@ -51,7 +49,7 @@ const Scheduler = () => {
       description: '',
       patientId: '',
       patientEmail: '',
-      date: Timestamp.fromDate(new Date()),
+      date: new Date(),
       doctorId: ''
     })
 
@@ -62,33 +60,17 @@ const Scheduler = () => {
 
   const fetchSchedules = async () => {
     try {
-      const firestoreSchedules = []
-      const q = query(collection(db, "schedules"));
-      const querySnapshot = await getDocs(q);
-
-      querySnapshot.forEach(async (doc) => {
-        firestoreSchedules.push({ id: doc.id, ...doc.data() })
-      });
-
-
-      return firestoreSchedules
+      const res = await axios.get('/api/get-schedules')
+      return res.data
     } catch (error) {
-      console.error('Error fetching users:', error);
+      console.error('Error fetching schedules:', error);
     }
   };
 
   const fetchPatients = async () => {
     try {
-      const firestorePatients = []
-      const q = query(collection(db, "users"), where("role", "==", 'patient'));
-      const querySnapshot = await getDocs(q);
-
-      querySnapshot.forEach(async (doc) => {
-        firestorePatients.push({ id: doc.id, email: doc.data().email })
-      });
-
-
-      return firestorePatients
+      const res = await axios.get('/api/get-patients')
+      return res.data
     } catch (error) {
       console.error('Error fetching users:', error);
     }
@@ -109,15 +91,16 @@ const Scheduler = () => {
   }, [])
 
   const addNewSchedule = async () => {
-    try {
+    try {    
       let patientEmail = patients.find((val) => val.id === newSchedule.patientId)?.email
 
-      await addDoc(collection(db, "schedules"), {
+      const res = await axios.post('/api/add-schedule', {
         ...newSchedule, doctorId: session.user.id, patientEmail
-      });
+      })
+
+      console.log(res)
 
       let data = await fetchSchedules();
-      
       setSchedules(data)
 
       toast({
@@ -172,7 +155,7 @@ const Scheduler = () => {
                 </TableCell>
                 <TableCell><Input placeholder='Type' type="text" value={newSchedule.type} onChange={(e) => setNewSchedule({ ...newSchedule, type: e.target.value })} /></TableCell>
                 <TableCell ><Input placeholder='Description' type="text" value={newSchedule.description} onChange={(e) => setNewSchedule({ ...newSchedule, description: e.target.value })} /></TableCell>
-                <TableCell ><DatePicker date={newSchedule.date} text="Schedule Date" setDate={(val) => setNewSchedule({ ...newSchedule, date: Timestamp.fromDate(val) })} /></TableCell>
+                <TableCell ><DatePicker date={newSchedule.date} text="Schedule Date" setDate={(val) => setNewSchedule({ ...newSchedule, date: new Date(val) })} /></TableCell>
 
                 <TableCell> <Button variant="outline" size="icon">
                   <AlertDialog>
@@ -204,7 +187,7 @@ const Scheduler = () => {
                     {schedule.description}
                   </TableCell>
                   <TableCell>
-                    {format(schedule.date.toDate(), 'dd-MM-yy')}
+                    {format(schedule.date, 'dd-MM-yy')}
                   </TableCell>
                 </TableRow>
               ))}

@@ -8,6 +8,10 @@ export default withAuth(function middleware(req) {
     if (req.nextUrl.pathname.startsWith('/CreateUser') && req.nextauth.token.role.toLowerCase() != 'admin') {
         return NextResponse.rewrite(new URL('/Denied', req.url))
     }
+
+    if (req.nextUrl.pathname.startsWith('/doctor/doctor-dashboard') && req.nextauth.token.role.toLowerCase() != 'doctor') {
+        return NextResponse.rewrite(new URL('/Denied', req.url))
+    }
 }, {
     callbacks: {
         authorized: ({ token }) => !!token
@@ -18,6 +22,6 @@ export default withAuth(function middleware(req) {
 
 export const config = {
     matcher: [
-        "/CreateUser"
+        "/CreateUser","/doctor/doctor-dashboard"
     ]
 }

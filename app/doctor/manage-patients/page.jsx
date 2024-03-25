@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { collection, query, where, getDocs, setDoc, doc, Timestamp } from "firebase/firestore";
+import {  setDoc, doc, Timestamp } from "firebase/firestore";
 
 import {
   Table,
@@ -20,27 +20,32 @@ import { Button } from "@/components/ui/button"
 import { useSession } from 'next-auth/react';
 import DatePicker from '@/app/components/DatePicker';
 import { useToast } from "@/components/ui/use-toast"
+import axios from 'axios';
+import { redirect } from 'next/navigation';
 
 const ManagePatients = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      // The user is not authenticated, handle it here.
+      redirect('/')
+    },
+  });
+
   const [patients, setPatients] = useState([])
 
   const { toast } = useToast()
 
   const fetchPatients = async () => {
     try {
-      const firestorePatients = []
-      const q = query(collection(db, "users"), where("role", "==", 'patient'));
-      const querySnapshot = await getDocs(q);
-
-      querySnapshot.forEach(async (doc) => {
-        firestorePatients.push({ id: doc.id, ...doc.data() })
-      });
+      const res = await axios.get('/api/get-patients')
+      
       toast({
         title: "Patients Fetched!",
         description: "Patients have been retrieved successfully.",
       })
-      return firestorePatients
+
+      return res.data
     } catch (error) {
       console.error('Error fetching users:', error);
     }
@@ -63,7 +68,6 @@ const ManagePatients = () => {
     if (patientIndex !== -1) {
       // Create a copy of the patients array
       const updatedPatients = [...patients];
-
       // Update the field for the patient at the found index
       if (!updatedPatients[patientIndex][trimesterType]) {
         updatedPatients[patientIndex][trimesterType] = {};
@@ -73,7 +77,7 @@ const ManagePatients = () => {
         updatedPatients[patientIndex][trimesterType][dateType] = {};
       }
 
-      updatedPatients[patientIndex][trimesterType][dateType] = Timestamp.fromDate(val);
+      updatedPatients[patientIndex][trimesterType][dateType] = val;
 
       // Set the updated patients state
       setPatients(updatedPatients);
@@ -84,11 +88,10 @@ const ManagePatients = () => {
   const onSave = async (id) => {
     const patientIndex = patients.findIndex(patient => patient.id === id)
     if (patientIndex !== -1) {
-
-      setDoc(doc(db, "users", id), {
+      axios.post('/api/update-patient', {
         ...patients[patientIndex]
       }).then((res) => {
-
+        console.log(res)
         toast({
           title: "Dates Saved!",
           description: "Dates have been saved successfully.",
@@ -102,7 +105,6 @@ const ManagePatients = () => {
       });
 
     }
-
   }
 
   return (
@@ -147,28 +149,28 @@ const ManagePatients = () => {
                               <TableRow>
                                 <TableCell>Trimester 1</TableCell>
                                 <TableCell>
-                                  <DatePicker date={user.trimester1?.startDate} setDate={(val) => setDate(val, 'trimester1', 'startDate', user.id)} text='Start Date' />
+                                  <DatePicker date={user.trimester1?.startDate} setDate={(val) => setDate(new Date(val), 'trimester1', 'startDate', user.id)} text='Start Date' />
                                 </TableCell>
                                 <TableCell>
-                                  <DatePicker date={user.trimester1?.endDate} setDate={(val) => setDate(val, 'trimester1', 'endDate', user.id)} text='End Date' />
+                                  <DatePicker date={user.trimester1?.endDate} setDate={(val) => setDate(new Date(val), 'trimester1', 'endDate', user.id)} text='End Date' />
                                 </TableCell>
                               </TableRow>
                               <TableRow>
                                 <TableCell>Trimester 2</TableCell>
                                 <TableCell>
-                                  <DatePicker date={user.trimester2?.startDate} setDate={(val) => setDate(val, 'trimester2', 'startDate', user.id)} text='Start Date' />
+                                  <DatePicker date={user.trimester2?.startDate} setDate={(val) => setDate(new Date(val), 'trimester2', 'startDate', user.id)} text='Start Date' />
                                 </TableCell>
                                 <TableCell>
-                                  <DatePicker date={user.trimester2?.endDate} setDate={(val) => setDate(val, 'trimester2', 'endDate', user.id)} text='End Date' />
+                                  <DatePicker date={user.trimester2?.endDate} setDate={(val) => setDate(new Date(val), 'trimester2', 'endDate', user.id)} text='End Date' />
                                 </TableCell>
                               </TableRow>
                               <TableRow>
                                 <TableCell>Trimester 3</TableCell>
                                 <TableCell>
-                                  <DatePicker date={user.trimester3?.startDate} setDate={(val) => setDate(val, 'trimester3', 'startDate', user.id)} text='Start Date' />
+                                  <DatePicker date={user.trimester3?.startDate} setDate={(val) => setDate(new Date(val), 'trimester3', 'startDate', user.id)} text='Start Date' />
                                 </TableCell>
                                 <TableCell>
-                                  <DatePicker date={user.trimester3?.endDate} setDate={(val) => setDate(val, 'trimester3', 'endDate', user.id)} text='End Date' />
+                                  <DatePicker date={user.trimester3?.endDate} setDate={(val) => setDate(new Date(val), 'trimester3', 'endDate', user.id)} text='End Date' />
                                 </TableCell>
                               </TableRow>
                             </TableBody>

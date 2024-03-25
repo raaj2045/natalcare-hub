@@ -15,6 +15,7 @@ function LoginDialog() {
 
     const [userEmail, setUserEmail] = useState('')
     const [userPassword, setUserPassword] = useState('')
+    const [error, setError] = useState('')
 
     return (
         <Dialog>
@@ -48,17 +49,25 @@ function LoginDialog() {
                                 <Input id="password" type="password" required value={userPassword}
                                     onChange={(e) => setUserPassword(e.target.value)} />
                             </div>
+
+                            {error !== '' ? <div className="grid gap-2"><p className="text-balance text-muted-foreground text-sm text-center text-red-700">
+                                {error}
+                            </p>
+                            </div> : null}
                             <Button type="submit" className="w-full" onClick={async () => {
                                 try {
-                                    console.log(userEmail, userPassword)
+                                    setError('')
                                     const res = await signIn("credentials", {
                                         username: userEmail,
                                         password: userPassword,
                                         redirect: false,
                                     });
-                                    console.log(res)
+
+                                    if(res.error){
+                                        setError(res.error)
+                                    }
                                 } catch (err) {
-                                    console.log(err)
+                                    setError(err.message)
                                 }
                             }
                             }>

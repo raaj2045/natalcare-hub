@@ -21,13 +21,13 @@ function DatePicker({date, setDate, text}) {
                 >
                     <CalendarIcon className="mr-2 h-4 w-4" />
 
-                    {date ? format(date.toDate(), "PPP") : <span>{text}</span>}
+                    {date ? format(date, "PPP") : <span>{text}</span>}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
                 <Calendar
                     mode="single"
-                    selected={date? date: Timestamp.fromDate(new Date())}
+                    selected={date? date: new Date()}
                     onSelect={setDate}
                     initialFocus
                 />
