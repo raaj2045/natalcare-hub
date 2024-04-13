@@ -116,6 +116,40 @@ You can start editing the page by modifying the files in the `app/<PAGE>/page.js
 
 By following these steps, users can effectively utilize the features provided by the NatalCare application, whether as an admin, doctor, or patient.
 
+## Using the NatalCare Demo Website
+
+### Demo Users
+
+To test the functionality of the NatalCare application on the demo website, you can use the following sample users with different roles:
+
+1. **Admin User**:
+   - **Email**: admin@gmail.com
+   - **Password**: admin123
+
+2. **Doctor User**:
+   - **Email**: doctor@gmail.com
+   - **Password**: doctor123
+
+3. **Patient User**:
+   - **Email**: patient@gmail.com
+   - **Password**: patient123
+
+### Steps to Access the Demo Website:
+
+1. Navigate to [NatalCare Demo Website](https://natalcare-hub.vercel.app/) in your web browser.
+
+2. Sign in using one of the sample user credentials provided above based on the role you want to test (admin, doctor, or patient).
+
+3. Once logged in, you can explore the different features and functionalities available to the respective roles:
+
+   - **Admin**: Manage users, create new users, assign roles.
+   - **Doctor**: Manage patients, schedule appointments, add trimester information.
+   - **Patient**: View appointments, access trimester-specific information.
+
+### Note:
+
+- The demo website provides a simulated environment for testing the NatalCare application. Any data entered or actions performed on the demo website will not affect the actual application or database.
+- Feel free to experiment with the features and functionalities of the NatalCare application using the provided sample user accounts.
 
 ## Learn More
 
