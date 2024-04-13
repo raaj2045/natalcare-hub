@@ -77,7 +77,44 @@ Remember, each folder inside the `app` directory becomes a route automatically. 
 
 You can start editing the page by modifying the files in the `app/<PAGE>/page.jsx` directory. The page auto-updates as you edit the file. For example, to edit the homepage, you would update `pages/index.js`. For modifying the APIs you can start editing `app/api/<api-path>/route.js`.
 
-## Using the Project
+## Using the NatalCare Hub Application
+
+### 1. Initial Setup
+
+- Ensure that the application is set up locally by following the instructions provided in the README file for local setup.
+
+### 2. Adding Initial Admin User
+
+- Manually add a user using email and password authentication in Firebase Authentication.
+- Create a new document in the Firestore database under the 'users' collection.
+  - Set the following fields for the document:
+    - **role**: admin
+    - **id**: User UID obtained when adding the email-based user in the authentication page.
+    - **email**: Same email used to create the user in Firebase Authentication.
+
+### 3. Sign In as Admin User
+
+- Use the email and password credentials of the admin user to sign in to the application.
+
+### 4. Managing Users
+
+- Once logged in as an admin, navigate to the 'Create Users' menu.
+- Add new users directly from the 'Create Users' menu, assigning roles of admin, doctor, or patient.
+- Admin users have the authority to add other users with specified roles.
+
+### 5. Doctor's Functionality
+
+- Doctors have access to two main menus:
+  - **Manage Patients**: View all patients and add trimester dates and information tips.
+  - **Scheduler**: Add appointments and checkups for patients.
+
+### 6. Patient's Functionality
+
+- Patients have access to two main menus:
+  - **Schedule**: View appointments in a calendar view.
+  - **Trimesters**: View trimester-specific information added by doctors.
+
+By following these steps, users can effectively utilize the features provided by the NatalCare application, whether as an admin, doctor, or patient.
 
 
 ## Learn More
