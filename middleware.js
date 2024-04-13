@@ -5,12 +5,26 @@ import { NextResponse } from "next/server"
 export default withAuth(function middleware(req) {
     console.log(req.nextUrl.pathname)
     console.log(req.nextauth.token.role)
-    if (req.nextUrl.pathname.startsWith('/CreateUser') && req.nextauth.token.role.toLowerCase() != 'admin') {
-        return NextResponse.rewrite(new URL('/Denied', req.url))
+    if (req.nextUrl.pathname.startsWith('/create-user') && req.nextauth.token.role.toLowerCase() != 'admin') {
+        return NextResponse.rewrite(new URL('/denied', req.url))
     }
 
-    if (req.nextUrl.pathname.startsWith('/doctor/doctor-dashboard') && req.nextauth.token.role.toLowerCase() != 'doctor') {
-        return NextResponse.rewrite(new URL('/Denied', req.url))
+    if (
+        (
+            req.nextUrl.pathname.startsWith('/doctor')
+        )
+
+        && req.nextauth.token.role.toLowerCase() != 'doctor') {
+        return NextResponse.rewrite(new URL('/denied', req.url))
+    }
+
+    if (
+        (
+            req.nextUrl.pathname.startsWith('/patient')
+        )
+
+        && req.nextauth.token.role.toLowerCase() != 'patient') {
+        return NextResponse.rewrite(new URL('/denied', req.url))
     }
 }, {
     callbacks: {
@@ -22,6 +36,10 @@ export default withAuth(function middleware(req) {
 
 export const config = {
     matcher: [
-        "/CreateUser","/doctor/doctor-dashboard"
+        "/create-user",
+        "/doctor/manage-patients",
+        "/doctor/scheduler",
+        "/patient/patient-schedule",
+        "/patient/trimester"
     ]
 }

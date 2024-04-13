@@ -77,6 +77,9 @@ Remember, each folder inside the `app` directory becomes a route automatically. 
 
 You can start editing the page by modifying the files in the `app/<PAGE>/page.jsx` directory. The page auto-updates as you edit the file. For example, to edit the homepage, you would update `pages/index.js`. For modifying the APIs you can start editing `app/api/<api-path>/route.js`.
 
+## Using the Project
+
+
 ## Learn More
 
 To learn more about Next.js and the tools used in this project, take a look at the following resources:

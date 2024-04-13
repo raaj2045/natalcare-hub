@@ -36,7 +36,7 @@ const Nav = ({ children }) => {
     {
       name: 'Create User',
       role: 'admin',
-      href: "/CreateUser",
+      href: "/create-user",
       icon: () => <Users />
     },
     {

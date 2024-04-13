@@ -31,8 +31,17 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import axios from 'axios';
+import { useSession } from 'next-auth/react';
 
 const CreateUser = () => {
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      // The user is not authenticated, handle it here.
+      redirect('/')
+    },
+  });
+
   const [userList, setUserList] = useState([]);
   const [editMode, setEditMode] = useState({});
   const [newUser, setNewUser] = useState({ email: '', role: 'patient', password: '' });

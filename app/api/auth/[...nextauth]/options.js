@@ -24,7 +24,7 @@ export const options = {
                         if (docSnap.exists()) {
 
                             const user = { ...docSnap.data(), id: userCredentials.user.uid }
-                            console.log("user data:", user);
+
                             return user;
 
                         } else {
