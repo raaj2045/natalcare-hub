@@ -40,12 +40,6 @@ const Nav = ({ children }) => {
       icon: () => <Users />
     },
     {
-      name: 'Patient Dashboard',
-      role: 'patient',
-      href: "/patient/patient-dashboard",
-      icon: () => <LayoutDashboard />
-    },
-    {
       name: 'Patient Schedule',
       role: 'patient',
       href: "/patient/patient-schedule",
@@ -56,12 +50,6 @@ const Nav = ({ children }) => {
       role: 'patient',
       href: "/patient/trimester",
       icon: () => <RefreshCcw />
-    },
-    {
-      name: 'Doctor Dashboard',
-      role: 'doctor',
-      href: "/doctor/doctor-dashboard",
-      icon: () => <LayoutDashboard />
     },
     {
       name: 'Manage Patients',
@@ -150,7 +138,7 @@ const Nav = ({ children }) => {
             <NavigationMenuList>
               <NavigationMenuItem>
                 {session ? (
-                  <Button onClick={signOut}>
+                  <Button onClick={() => signOut({callbackUrl:'/'})}>
                     <LogOut className="mr-2 h-4 w-4" /> Log out
                   </Button>
                 ) : (
