@@ -1,8 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<!-- Documentation for the Natalcare Hub Project which is a PoC App for empowering expecting mothers with comprehensive prenatal care. -->
+Natalcare Hub Project is a PoC App for empowering expecting mothers with comprehensive prenatal care.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+Ensure you have the following installed on your system:
+
+- Node.js (version 20 or above)
+- npm (version 10 or above)
+
+### Steps
+
+1. Clone the repository to your local machine using `git clone https://github.gatech.edu/rmishra76/natalcare-hub.git`.
+2. Navigate to the project directory using `cd natalcare-hub`.
+3. Install the project dependencies using `npm install`.
+4. Set up environment variables. Create a `.env.local` file in the root directory of your project. Add the following lines to the file:
+
+```bash
+NEXTAUTH_SECRET=<your-secret>
+NEXTAUTH_URL=<your-url>
+API_KEY=<your-api-key>
+```
+
+Replace the above values with your actual values.
+
+NEXTAUTH_SECRET: Generate a secure token. You can use a tool like https://www.lastpass.com/features/password-generator to generate a secure token.
+NEXTAUTH_URL: The base URL of your application. This should be the URL where your application will be deployed.
+API_KEY: This is the API key you get from setting up a new Firebase project.
+
+### Firebase Configuration
+
+In addition to the environment variables, you will also need to configure Firebase. Enable firestore and the email-based authentication for your firebase project. Get the firebase configurations and update the app/firebase.js file with your configurations. Here's an example:
+
+```javascript
+const firebaseConfig = {
+  apiKey: process.env.API_KEY,
+  authDomain: "<your-auth-domain>",
+  projectId: "<your-project-id>",
+  storageBucket: "<your-storage-bucket>",
+  messagingSenderId: "<your-messaging-sender-id>",
+  appId: "<your-app-id>"
+};
+```
+
+
+Run the development server:
 
 ```bash
 npm run dev
@@ -16,9 +59,23 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Project Structure
+
+This is a Next.js project built using SHADCN UI and TailwindCSS with a few additional directories for organization. Here's a brief overview:
+
+- `app/layout.js`: This is the entry file of the project.
+- `app/page.jsx`: This file corresponds to the page available at the root route `yourwebsite.com/`.
+- `app/<Page_Name>/page.jsx`: This directory contains all the page components. Each folder corresponds to a route based on its name.
+- `app/components/`: This directory contains reusable components that can be used across different pages.
+- `app/api/`: This directory contains files for handling API calls.
+- `/components/`: This directory contains resuable components installed through shadcn UI.
+
+Remember, each folder inside the `app` directory becomes a route automatically. For example, `app/Home/page.jsx` would be accessible at `yourwebsite.com/Home`.
+
+## Editing the Project
+
+You can start editing the page by modifying the files in the `app/<PAGE>/page.jsx` directory. The page auto-updates as you edit the file. For example, to edit the homepage, you would update `pages/index.js`. For modifying the APIs you can start editing `app/api/<api-path>/route.js`.
 
 ## Learn More
 
