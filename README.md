@@ -79,12 +79,13 @@ You can start editing the page by modifying the files in the `app/<PAGE>/page.js
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+To learn more about Next.js and the tools used in this project, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- [Learn Firebase](https://firebase.google.com/docs/) - learn about Firebase.
+- [Learn shadcn/ui](https://ui.shadcn.com/docs) - learn about shadcn/ui.
+- [Learn Tailwindcss](https://v2.tailwindcss.com/docs) - learn about Tailwindcss.
 
 ## Deploy on Vercel
 
