@@ -92,6 +92,12 @@ const Scheduler = () => {
 
   const addNewSchedule = async () => {
     try {    
+      if(newSchedule.type === '' && newSchedule.description === ''&& newSchedule.patientId === ''&& newSchedule.patientEmail === ''&& newSchedule.doctorId === ''){
+        alert('All fields are to be filled.')
+        return
+      }
+
+
       let patientEmail = patients.find((val) => val.id === newSchedule.patientId)?.email
 
       const res = await axios.post('/api/add-schedule', {
